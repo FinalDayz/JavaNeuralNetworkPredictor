@@ -3,29 +3,51 @@ package com.github.FinalDayz.NeuralNetwork;
 public class NeuralNetwork {
 
     private Layer[] layers;
-    private int inputSize, outputSize;
+    private Layer inputLayer, outputLayer;
 
-    public NeuralNetwork(int inputSize, int outputSize) {
+    public NeuralNetwork(InputLayer inputLayer, OutputLayer outputLayer) {
         this.layers = new Layer[0];
-        this.inputSize = inputSize;
-        this.outputSize = outputSize;
+        this.inputLayer = inputLayer;
+        this.outputLayer = outputLayer;
     }
 
-    public void addLayer(int size, Activation activation) {
+    public void addLayer(Layer layer) {
         Layer[] newLayers = new Layer[this.layers.length + 1];
 
         for(int index = 0; index < this.layers.length; index++) {
             newLayers[index] = layers[index];
         }
 
-        Layer newLayer = new HiddenLayer(size);
-
-        newLayers[this.layers.length] = newLayer;
+        newLayers[this.layers.length] = layer;
         this.layers = newLayers;
     }
 
-    public void compile() {
-
+    public void connectLayers() {
+        Layer prefLayer = this.inputLayer;
+        for(Layer layer : this.layers) {
+            prefLayer.connectTo(layer);
+            prefLayer = layer;
+        }
+        prefLayer.connectTo(this.outputLayer);
     }
 
+    public String toString() {
+        String output =  "[Neural network, \n\t" + this.layers.length + " hidden layers, " +
+                "\n\tInput size: " + this.inputLayer.getSize() + ", " +
+                "\n\tOutput size: " + this.outputLayer.getSize() + "]\n";
+
+        output += "[Layers]:\n";
+
+        output += "\t"+this.inputLayer.toString() + "\n";
+        for(Layer layer : this.layers) {
+            output += "\t"+layer.toString() + "\n";
+        }
+        output += "\t"+this.outputLayer.toString() + "\n";
+
+        return output;
+    }
+
+    public void feedForward(double[] inputs) {
+        this.inputLayer.feedForward(inputs);
+    }
 }
