@@ -8,4 +8,5 @@ public class OutputLayer extends WeightsLayer {
     public String toString() {
         return "[OutputLayer, size: " + this.size + "]";
     }
+
 }

@@ -5,6 +5,7 @@ public abstract class Layer {
     protected double[] inputs;
     protected int size;
     protected Layer nextLayer;
+    protected double[] output;
 
     public Layer(int size) {
         this.size = size;
@@ -22,5 +23,15 @@ public abstract class Layer {
 
     public String toString() {
         return "[Layer, size: " + this.size + "]";
+    }
+
+    public double[] getOutput () {
+        return this.output;
+    }
+
+    protected void nextLayerIsDefined() {
+        if(this.nextLayer == null) {
+            throw new IllegalStateException("Next layer is not defined yet");
+        }
     }
 }

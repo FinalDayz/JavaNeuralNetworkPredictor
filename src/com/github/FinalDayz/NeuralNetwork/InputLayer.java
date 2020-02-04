@@ -8,6 +8,7 @@ public class InputLayer extends Layer {
     @Override
     void feedForward(double[] input) {
         this.inputs = input;
+        nextLayerIsDefined();
         this.nextLayer.feedForward(input);
     }
 

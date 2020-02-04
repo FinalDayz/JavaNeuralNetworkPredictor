@@ -1,13 +1,11 @@
 package com.github.FinalDayz;
 
-import com.github.FinalDayz.NeuralNetwork.HiddenLayer;
-import com.github.FinalDayz.NeuralNetwork.InputLayer;
-import com.github.FinalDayz.NeuralNetwork.NeuralNetwork;
-import com.github.FinalDayz.NeuralNetwork.OutputLayer;
+import com.github.FinalDayz.NeuralNetwork.*;
 
 public class Main {
 
     public static void main(String[] args) {
+
 
         NeuralNetwork network = new NeuralNetwork(
                 new InputLayer(2),

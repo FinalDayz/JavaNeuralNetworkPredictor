@@ -3,7 +3,8 @@ package com.github.FinalDayz.NeuralNetwork;
 public class NeuralNetwork {
 
     private Layer[] layers;
-    private Layer inputLayer, outputLayer;
+    private InputLayer inputLayer;
+    private OutputLayer outputLayer;
 
     public NeuralNetwork(InputLayer inputLayer, OutputLayer outputLayer) {
         this.layers = new Layer[0];
@@ -47,7 +48,9 @@ public class NeuralNetwork {
         return output;
     }
 
-    public void feedForward(double[] inputs) {
+    public double[] feedForward(double[] inputs) {
         this.inputLayer.feedForward(inputs);
+
+        return this.outputLayer.getOutput();
     }
 }
