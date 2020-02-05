@@ -26,7 +26,7 @@ public class NeuralNetwork {
     public void connectLayers() {
         Layer prefLayer = this.inputLayer;
         for(Layer layer : this.layers) {
-            prefLayer.connectTo(layer);
+            layer.connectTo(prefLayer);
             prefLayer = layer;
         }
         prefLayer.connectTo(this.outputLayer);
@@ -51,6 +51,12 @@ public class NeuralNetwork {
     public double[] feedForward(double[] inputs) {
         this.inputLayer.feedForward(inputs);
 
-        return this.outputLayer.getOutput();
+        return this.outputLayer.getOutputs();
+    }
+
+    public void initializeLayers() {
+        for(Layer layer : this.layers) {
+            layer.init();
+        }
     }
 }

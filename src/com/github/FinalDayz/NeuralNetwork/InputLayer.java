@@ -8,11 +8,16 @@ public class InputLayer extends Layer {
     @Override
     void feedForward(double[] input) {
         this.inputs = input;
-        nextLayerIsDefined();
-        this.nextLayer.feedForward(input);
+        prefLayerIsDefined();
+        this.prefLayer.feedForward(input);
     }
 
     public String toString() {
         return "[InputLayer, size: " + this.size + "]";
+    }
+
+    @Override
+    public void init() {
+
     }
 }

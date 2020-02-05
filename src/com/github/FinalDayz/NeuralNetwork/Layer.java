@@ -4,8 +4,8 @@ public abstract class Layer {
 
     protected double[] inputs;
     protected int size;
-    protected Layer nextLayer;
-    protected double[] output;
+    protected Layer prefLayer;
+    protected double[] outputs;
 
     public Layer(int size) {
         this.size = size;
@@ -18,20 +18,23 @@ public abstract class Layer {
     }
 
     public void connectTo(Layer outputLayer) {
-        this.nextLayer = nextLayer;
+        System.out.println("Connect this layer " + this + " to " + outputLayer);
+        this.prefLayer = outputLayer;
     }
 
     public String toString() {
         return "[Layer, size: " + this.size + "]";
     }
 
-    public double[] getOutput () {
-        return this.output;
+    public double[] getOutputs() {
+        return this.outputs;
     }
 
-    protected void nextLayerIsDefined() {
-        if(this.nextLayer == null) {
+    protected void prefLayerIsDefined() {
+        if(this.prefLayer == null) {
             throw new IllegalStateException("Next layer is not defined yet");
         }
     }
+
+    public abstract void init();
 }

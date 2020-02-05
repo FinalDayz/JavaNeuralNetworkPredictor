@@ -12,13 +12,15 @@ public class Main {
                 new OutputLayer(1)
         );
 
-        network.addLayer(
-                new HiddenLayer(10)
-        );
-
-        network.feedForward(new double[]{1, 0});
+//        network.addLayer(
+//                new HiddenLayer(10)
+//        );
 
         network.connectLayers();
+
+        network.initializeLayers();
+
+        network.feedForward(new double[]{1, 0});
 
         System.out.println(network.toString());
 
