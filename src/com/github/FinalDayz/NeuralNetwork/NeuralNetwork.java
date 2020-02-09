@@ -1,5 +1,7 @@
 package com.github.FinalDayz.NeuralNetwork;
 
+import java.util.Arrays;
+
 public class NeuralNetwork {
 
     private Layer[] layers;
@@ -26,10 +28,10 @@ public class NeuralNetwork {
     public void connectLayers() {
         Layer prefLayer = this.inputLayer;
         for(Layer layer : this.layers) {
-            layer.connectTo(prefLayer);
+            layer.connectPrefLayer(prefLayer);
             prefLayer = layer;
         }
-        prefLayer.connectTo(this.outputLayer);
+        this.outputLayer.connectPrefLayer(prefLayer);
     }
 
     public String toString() {
@@ -54,9 +56,34 @@ public class NeuralNetwork {
         return this.outputLayer.getOutputs();
     }
 
+    public double[] lastOutput() {
+        return this.outputLayer.getOutputs();
+    }
+
     public void initializeLayers() {
+        this.inputLayer.init();
+
         for(Layer layer : this.layers) {
             layer.init();
         }
+
+        this.outputLayer.init();
+    }
+
+    public void printLayerOutput() {
+        System.out.println(Arrays.toString(this.inputLayer.getOutputs()));
+
+        for(Layer layer : this.layers) {
+            System.out.println(Arrays.toString(layer.getOutputs()));
+        }
+
+        System.out.println(Arrays.toString(this.outputLayer.getOutputs()));
+    }
+
+    public double backporpogate(double[] wantedOutput) {
+        if(wantedOutput.length != this.outputLayer.size) {
+            throw new IllegalArgumentException("Wanted output size is not equal to output layer size");
+        }
+        return this.outputLayer.beginBackpropogate(wantedOutput);
     }
 }

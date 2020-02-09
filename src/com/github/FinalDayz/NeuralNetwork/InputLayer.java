@@ -1,15 +1,16 @@
 package com.github.FinalDayz.NeuralNetwork;
 
 public class InputLayer extends Layer {
+
     public InputLayer(int size) {
-        super(size);
+        super(size, null);
     }
 
     @Override
     void feedForward(double[] input) {
         this.inputs = input;
-        prefLayerIsDefined();
-        this.prefLayer.feedForward(input);
+        this.outputs = input;
+        this.nextLayer.feedForward(input);
     }
 
     public String toString() {
@@ -17,7 +18,13 @@ public class InputLayer extends Layer {
     }
 
     @Override
-    public void init() {
+    public void calculateDerivative() {}
 
+    @Override
+    public void ajustParameters(double[] wantedOutput) {}
+
+    @Override
+    public InputLayer init() {
+        return this;
     }
 }

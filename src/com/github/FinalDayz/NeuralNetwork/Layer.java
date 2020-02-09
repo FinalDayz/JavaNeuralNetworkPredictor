@@ -1,15 +1,22 @@
 package com.github.FinalDayz.NeuralNetwork;
 
+import com.github.FinalDayz.NeuralNetwork.activation.Activation;
+
 public abstract class Layer {
 
     protected double[] inputs;
     protected int size;
     protected Layer prefLayer;
+    protected Layer nextLayer;
     protected double[] outputs;
+    protected Activation activation;
 
-    public Layer(int size) {
+    public Layer(int size, Activation activation) {
         this.size = size;
+        this.activation = activation;
     }
+
+    public abstract Layer init();
 
     abstract void feedForward(double[] input);
 
@@ -17,9 +24,14 @@ public abstract class Layer {
         return this.size;
     }
 
-    public void connectTo(Layer outputLayer) {
-        System.out.println("Connect this layer " + this + " to " + outputLayer);
-        this.prefLayer = outputLayer;
+    public void connectPrefLayer(Layer inputLayer) {
+        System.out.println("Connect this layer " + this + " to " + inputLayer);
+        this.prefLayer = inputLayer;
+        inputLayer.connectNextLayer(this);
+    }
+
+    public void connectNextLayer(Layer nextLayer) {
+        this.nextLayer = nextLayer;
     }
 
     public String toString() {
@@ -36,5 +48,11 @@ public abstract class Layer {
         }
     }
 
-    public abstract void init();
+    protected double[] activateValues(double[] inputValues) {
+        return activation.activateValues(inputValues);
+    }
+
+    public abstract void calculateDerivative(double[] outputDerivatives);
+
+    public abstract void ajustParameters(double[] wantedOutput);
 }
