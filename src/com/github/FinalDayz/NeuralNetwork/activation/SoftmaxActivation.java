@@ -1,7 +1,6 @@
 package com.github.FinalDayz.NeuralNetwork.activation;
 
 import com.github.FinalDayz.NeuralNetwork.Layer;
-import jdk.jshell.spi.ExecutionControl;
 
 public class SoftmaxActivation implements Activation {
     @Override
@@ -24,6 +23,6 @@ public class SoftmaxActivation implements Activation {
 
     @Override
     public double[] derivativeValues(double[] values) {
-        throw new NoSuchMethodError("Method not implemented yet");
+        throw new IllegalStateException("Method not implemented yet");
     }
 }

@@ -18,13 +18,23 @@ public class InputLayer extends Layer {
     }
 
     @Override
-    public void calculateDerivative() {}
+    public void calculateDerivative(double[] outputDerivatives) {}
 
     @Override
-    public void ajustParameters(double[] wantedOutput) {}
+    public void ajustParameters(double learningRate) { }
 
     @Override
     public InputLayer init() {
         return this;
+    }
+
+    @Override
+    public void printBlackBox() {
+        System.out.println("[input layer]");
+        System.out.print("\t[inputs]");
+        for(int index = 0; index < size; index++) {
+            System.out.print("\t" +NNUtils.dblToStr(inputs[index]));
+        }
+        System.out.println();
     }
 }

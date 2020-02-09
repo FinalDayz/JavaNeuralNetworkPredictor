@@ -84,6 +84,14 @@ public class NeuralNetwork {
         if(wantedOutput.length != this.outputLayer.size) {
             throw new IllegalArgumentException("Wanted output size is not equal to output layer size");
         }
-        return this.outputLayer.beginBackpropogate(wantedOutput);
+        return this.outputLayer.beginBackpropogate(wantedOutput, 0.1);
+    }
+
+    public void printBlackBox() {
+        inputLayer.printBlackBox();
+        for(Layer layer : this.layers) {
+            layer.printBlackBox();
+        }
+        outputLayer.printBlackBox();
     }
 }

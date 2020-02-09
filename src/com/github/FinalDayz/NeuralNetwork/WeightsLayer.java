@@ -1,14 +1,15 @@
 package com.github.FinalDayz.NeuralNetwork;
 
 import com.github.FinalDayz.NeuralNetwork.activation.Activation;
-import com.github.FinalDayz.SysUtils;
 import com.sun.nio.sctp.InvalidStreamException;
+
+import java.util.Arrays;
 
 public class WeightsLayer extends Layer {
 
     protected double[][] weights;
     protected double[] bias;
-    protected double[] weightsDerivative;
+    protected double[][] weightsDerivative;
     protected double[] inputDerivative;
 
     public WeightsLayer(int size, Activation activation) {
@@ -72,11 +73,40 @@ public class WeightsLayer extends Layer {
         for(int index = 0; index < this.inputDerivative.length; index++) {
             this.inputDerivative[index] *= outputDerivatives[index];
         }
+
+        // This is to store the derivatives for the output of the previous layer
+        double[] prefOutputDerivative = new double[this.prefLayer.size];
+        Arrays.fill(prefOutputDerivative, 1);
+
+        // Now that we have the derivative for the input with respect to the final output
+        // We can calculate the derivative or each weight
+        // It will be equal to all the derivatives of the weights that it is connected to
+        weightsDerivative = new double[this.weights.length][];
+        for(int thisY = 0; thisY < this.weights.length; thisY++) {
+            weightsDerivative[thisY] = new double[weights[thisY].length];
+            for (int prefY = 0; prefY < this.weights[thisY].length; prefY++) {
+                weightsDerivative[thisY][prefY] = this.inputDerivative[thisY] * this.prefLayer.outputs[prefY];
+                prefOutputDerivative[prefY] *= weightsDerivative[thisY][prefY] * this.weights[thisY][prefY];
+            }
+        }
+
+        this.prefLayer.calculateDerivative(prefOutputDerivative);
     }
 
     @Override
-    public void ajustParameters(double[] wantedOutput) {
+    public void ajustParameters(double learningRate) {
 
+        for(int index = 0; index < this.bias.length; index++) {
+            this.bias[index] += inputDerivative[index] * learningRate;
+        }
+
+
+        for(int thisY = 0; thisY < this.weightsDerivative.length; thisY++) {
+            for (int prefY = 0; prefY < this.weightsDerivative[thisY].length; prefY++) {
+                this.weights[thisY][prefY] += this.weightsDerivative[thisY][prefY] * learningRate;
+            }
+        }
+        this.prefLayer.ajustParameters(learningRate);
     }
 
     private void hasWeights() {
@@ -88,5 +118,51 @@ public class WeightsLayer extends Layer {
     public WeightsLayer init() {
         this.initWeights();
         return this;
+    }
+
+    @Override
+    public void printBlackBox() {
+        System.out.print("[WeightsLayer]");
+
+
+        for(int index = 0; index < size; index++) {
+            System.out.println("");
+            System.out.print("\t[weights neuron "+index+"]");
+            for(int prefIndex = 0; prefIndex < this.prefLayer.size; prefIndex++) {
+                System.out.print("\t" +NNUtils.dblToStr(weights[index][prefIndex]));
+            }
+        }
+        System.out.println();
+
+        System.out.print("\t[before activation], ");
+        for(int index = 0; index < size; index++) {
+            System.out.print("\t" +NNUtils.dblToStr(inputs[index]));
+        }
+        System.out.println();
+        System.out.print("\t[after activation], ");
+        for(int index = 0; index < size; index++) {
+            System.out.print("\t" +NNUtils.dblToStr(outputs[index]));
+        }
+        System.out.println();
+        if(weightsDerivative == null) {
+            return;
+        }
+
+        System.out.print("\t--derivatives--");
+
+        for(int index = 0; index < weightsDerivative.length; index++) {
+            System.out.println("");
+            System.out.print("\t[derivative neuron "+index+"]");
+            for(int prefIndex = 0; prefIndex < this.prefLayer.size; prefIndex++) {
+                System.out.print("\t" +NNUtils.dblToStr(weightsDerivative[index][prefIndex]));
+            }
+        }
+        System.out.println();
+
+        System.out.print("\t[derivative input], ");
+        for(int index = 0; index < size; index++) {
+            System.out.print("\t" +NNUtils.dblToStr(inputDerivative[index]));
+        }
+        System.out.println();
     }
 }

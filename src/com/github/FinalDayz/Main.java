@@ -1,6 +1,8 @@
 package com.github.FinalDayz;
 
 import com.github.FinalDayz.NeuralNetwork.*;
+import com.github.FinalDayz.NeuralNetwork.activation.LiniarActivation;
+import com.github.FinalDayz.NeuralNetwork.activation.ReLuActivation;
 import com.github.FinalDayz.NeuralNetwork.activation.TanhActivation;
 
 public class Main extends SysUtils {
@@ -9,25 +11,27 @@ public class Main extends SysUtils {
 
 
         NeuralNetwork network = new NeuralNetwork(
-                new InputLayer(2),
-                new OutputLayer(1, new TanhActivation())
+                new InputLayer(1),
+                new OutputLayer(1, new ReLuActivation())
         );
 
         network.addLayer(
-                new HiddenLayer(10, new TanhActivation())
+                new HiddenLayer(2, new ReLuActivation())
         );
 
         network.connectLayers();
 
         network.initializeLayers();
 
-        network.feedForward(new double[]{1, 0});
+        for(int i = 0; i < 10; i++) {
+            println("["+i+"]");
+            print("lastOutput: ");
+            println(
+                    network.feedForward(new double[]{1})
+            );
 
-        println(network.lastOutput());
-
-        System.out.println(network.toString());
-        network.printLayerOutput();
-        println("mse: " + network.backporpogate(new double[]{1}));
+            println("mse: " + network.backporpogate(new double[]{1}));
+        }
 
     }
 }

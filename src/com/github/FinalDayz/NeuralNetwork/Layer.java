@@ -25,7 +25,6 @@ public abstract class Layer {
     }
 
     public void connectPrefLayer(Layer inputLayer) {
-        System.out.println("Connect this layer " + this + " to " + inputLayer);
         this.prefLayer = inputLayer;
         inputLayer.connectNextLayer(this);
     }
@@ -54,5 +53,7 @@ public abstract class Layer {
 
     public abstract void calculateDerivative(double[] outputDerivatives);
 
-    public abstract void ajustParameters(double[] wantedOutput);
+    public abstract void ajustParameters(double learningRate);
+
+    public abstract void printBlackBox();
 }

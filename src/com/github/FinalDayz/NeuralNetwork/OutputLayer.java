@@ -2,6 +2,8 @@ package com.github.FinalDayz.NeuralNetwork;
 
 import com.github.FinalDayz.NeuralNetwork.activation.Activation;
 
+import java.util.Arrays;
+
 public class OutputLayer extends WeightsLayer {
 
     public OutputLayer(int size, Activation activation) {
@@ -12,8 +14,14 @@ public class OutputLayer extends WeightsLayer {
         return "[OutputLayer, size: " + this.size + "]";
     }
 
-    public double beginBackpropogate(double[] wantedOutput) {
-        super.ajustParameters(wantedOutput);
+    public double beginBackpropogate(double[] wantedOutput, double learningRate) {
+        double[] derivativesError = new double[wantedOutput.length];
+
+        for(int index = 0; index < wantedOutput.length; index++) {
+            derivativesError[index] = wantedOutput[index] - outputs[index];
+        }
+        super.calculateDerivative(derivativesError);
+        super.ajustParameters(learningRate);
 
         double MSE = 0;
         for(int index = 0; index < wantedOutput.length; index++) {
