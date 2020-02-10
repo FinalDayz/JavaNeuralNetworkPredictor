@@ -16,15 +16,16 @@ public class WeightsLayer extends Layer {
         super(size, activation);
     }
 
-    public void initWeights() {
-        this.initWeights(-1, 1);
+    public void initParameters() {
+        this.initParameters(-2, 2);
     }
 
-    public void initWeights(double minValue, double maxValue) {
+    public void initParameters(double minValue, double maxValue) {
         prefLayerIsDefined();
         this.weights = new double[size][prefLayer.size];
         this.bias = new double[size];
         for(int index = 0; index < weights.length; index++) {
+            bias[index] = NNUtils.random(minValue, maxValue);
             for(int prefLayerIndex = 0; prefLayerIndex < weights[index].length; prefLayerIndex++) {
                 weights[index][prefLayerIndex] = NNUtils.random(minValue, maxValue);
             }
@@ -75,8 +76,8 @@ public class WeightsLayer extends Layer {
         }
 
         // This is to store the derivatives for the output of the previous layer
-        double[] prefOutputDerivative = new double[this.prefLayer.size];
-        Arrays.fill(prefOutputDerivative, 1);
+        double[] prefLayerDerivative = new double[this.prefLayer.size];
+        Arrays.fill(prefLayerDerivative, 0);
 
         // Now that we have the derivative for the input with respect to the final output
         // We can calculate the derivative or each weight
@@ -86,11 +87,11 @@ public class WeightsLayer extends Layer {
             weightsDerivative[thisY] = new double[weights[thisY].length];
             for (int prefY = 0; prefY < this.weights[thisY].length; prefY++) {
                 weightsDerivative[thisY][prefY] = this.inputDerivative[thisY] * this.prefLayer.outputs[prefY];
-                prefOutputDerivative[prefY] *= weightsDerivative[thisY][prefY] * this.weights[thisY][prefY];
+//                prefLayerDerivative[prefY] += weightsDerivative[thisY][prefY] * this.weights[thisY][prefY];
             }
         }
 
-        this.prefLayer.calculateDerivative(prefOutputDerivative);
+        this.prefLayer.calculateDerivative(prefLayerDerivative);
     }
 
     @Override
@@ -116,14 +117,18 @@ public class WeightsLayer extends Layer {
 
     @Override
     public WeightsLayer init() {
-        this.initWeights();
+        this.initParameters();
         return this;
     }
 
     @Override
     public void printBlackBox() {
-        System.out.print("[WeightsLayer]");
+        System.out.println("[WeightsLayer]");
 
+        System.out.print("\t[bias], ");
+        for(int index = 0; index < size; index++) {
+            System.out.print("\t" + NNUtils.dblToStr(bias[index]));
+        }
 
         for(int index = 0; index < size; index++) {
             System.out.println("");

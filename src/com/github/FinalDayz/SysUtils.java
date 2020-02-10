@@ -4,6 +4,8 @@ import java.util.Arrays;
 
 public class SysUtils {
 
+    public static boolean DEBUG = false;
+
     public static void println(Object out) {
         System.out.println(out);
     }

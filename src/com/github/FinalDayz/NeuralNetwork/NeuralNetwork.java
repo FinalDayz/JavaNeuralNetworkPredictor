@@ -51,6 +51,9 @@ public class NeuralNetwork {
     }
 
     public double[] feedForward(double[] inputs) {
+        if(inputs.length != this.inputLayer.size) {
+            throw new IllegalArgumentException("Input size does not equal predefined input layer size");
+        }
         this.inputLayer.feedForward(inputs);
 
         return this.outputLayer.getOutputs();

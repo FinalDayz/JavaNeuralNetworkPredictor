@@ -1,12 +1,15 @@
 package com.github.FinalDayz.NeuralNetwork;
 
 public class NNUtils {
-    public static double random(double minValue, double maxValue) {return 1;
-        //return (Math.random() * (maxValue - minValue)) - maxValue;
+    public static double random(double minValue, double maxValue) {
+        return (Math.random() * (maxValue - minValue)) - maxValue;
     }
 
     public static String dblToStr(double x) {
-        x = Math.round(x*1000) / 1000.0;
+        if(Double.isNaN(x)) {
+            return "NaN";
+        }
+        x = Math.round(x*10000) / 10000.0;
         return String.valueOf(x);
     }
 }
