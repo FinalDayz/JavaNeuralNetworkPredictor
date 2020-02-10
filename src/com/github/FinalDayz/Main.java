@@ -19,7 +19,7 @@ public class Main extends SysUtils {
         );
 
         network.addLayer(
-                new HiddenLayer(2, new TanhActivation())
+                new HiddenLayer(1, new TanhActivation())
         );
 
 
