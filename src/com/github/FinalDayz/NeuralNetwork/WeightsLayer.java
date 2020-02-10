@@ -87,7 +87,7 @@ public class WeightsLayer extends Layer {
             weightsDerivative[thisY] = new double[weights[thisY].length];
             for (int prefY = 0; prefY < this.weights[thisY].length; prefY++) {
                 weightsDerivative[thisY][prefY] = this.inputDerivative[thisY] * this.prefLayer.outputs[prefY];
-//                prefLayerDerivative[prefY] += weightsDerivative[thisY][prefY] * this.weights[thisY][prefY];
+                prefLayerDerivative[prefY] += this.weights[thisY][prefY] * this.inputDerivative[thisY];
             }
         }
 
