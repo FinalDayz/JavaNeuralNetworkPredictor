@@ -4,6 +4,7 @@ package com.github.FinalDayz.NeuralNetwork;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Dataset {
@@ -16,6 +17,8 @@ public class Dataset {
 
     int[][] inputDataInt;
     int[][] outputDataInt;
+
+    List<String[]> replaceInstances = new ArrayList<String[]>();
 
 
     public Dataset(File dataFile) {
@@ -193,10 +196,14 @@ public class Dataset {
         return true;
     }
 
-    public static String[][] parseLineNoSeperator(String line, char inputOutputSeperator) {
+    public String[][] parseLineNoSeperator(String line, char inputOutputSeperator) {
         ArrayList<String> inputValues = new ArrayList<String>();
         ArrayList<String> outputValues = new ArrayList<String>();
         boolean inOutput = false;
+
+        for(String[] replaceInstance : this.replaceInstances) {
+            line = line.replace(replaceInstance[0], replaceInstance[1]);
+        }
 
         char[] chars = line.toCharArray();
 
@@ -222,8 +229,12 @@ public class Dataset {
 
     }
 
-    public static String[] parseLine(String cvsLine, char seperator, boolean withQuotes) {
+    public String[] parseLine(String cvsLine, char seperator, boolean withQuotes) {
         ArrayList<String> values = new ArrayList<String>();
+
+        for(String[] replaceInstance : this.replaceInstances) {
+            cvsLine = cvsLine.replace(replaceInstance[0], replaceInstance[1]);
+        }
 
         char[] chars = cvsLine.toCharArray();
         //loop through every character
@@ -320,5 +331,9 @@ public class Dataset {
 
         return finalString;
 
+    }
+
+    public void replace(String replace, String with) {
+        this.replaceInstances.add(new String[]{replace, with});
     }
 }

@@ -10,6 +10,10 @@ public class SysUtils {
         System.out.println(out);
     }
 
+    public static void println() {
+        System.out.println();
+    }
+
     public static void print(Object out) {
         System.out.print(out);
     }

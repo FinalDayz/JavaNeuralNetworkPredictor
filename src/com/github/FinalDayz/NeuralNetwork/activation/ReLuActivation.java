@@ -1,6 +1,5 @@
 package com.github.FinalDayz.NeuralNetwork.activation;
 
-import com.github.FinalDayz.NeuralNetwork.Layer;
 
 public class ReLuActivation extends DefaultActivation {
 

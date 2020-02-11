@@ -2,6 +2,8 @@ package com.github.FinalDayz.NeuralNetwork.activation;
 
 import com.github.FinalDayz.NeuralNetwork.Layer;
 
+import java.util.Arrays;
+
 public class SoftmaxActivation implements Activation {
     @Override
     public double[] activateValues(double[] valuesToActivate) {
@@ -23,6 +25,9 @@ public class SoftmaxActivation implements Activation {
 
     @Override
     public double[] derivativeValues(double[] values) {
-        throw new IllegalStateException("Method not implemented yet");
+        double[] returnArray = new double[values.length];
+        Arrays.fill(returnArray, 1);
+        return returnArray;
+//        throw new IllegalStateException("Method not implemented yet");
     }
 }

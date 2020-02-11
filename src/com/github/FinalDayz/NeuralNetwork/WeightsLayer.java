@@ -12,6 +12,9 @@ public class WeightsLayer extends Layer {
     protected double[][] weightsDerivative;
     protected double[] inputDerivative;
 
+    protected double[][] weightsBatchDerivative;
+    protected double[] inputBatchDerivative;
+
     public WeightsLayer(int size, Activation activation) {
         super(size, activation);
     }
@@ -70,7 +73,7 @@ public class WeightsLayer extends Layer {
 
     @Override
     public void calculateDerivative(double[] outputDerivatives) {
-        this.inputDerivative = this.activation.derivativeValues(this.inputs);
+        this.inputDerivative = this.activation.derivativeValues(this.outputs);
         for(int index = 0; index < this.inputDerivative.length; index++) {
             this.inputDerivative[index] *= outputDerivatives[index];
         }
@@ -100,7 +103,6 @@ public class WeightsLayer extends Layer {
         for(int index = 0; index < this.bias.length; index++) {
             this.bias[index] += inputDerivative[index] * learningRate;
         }
-
 
         for(int thisY = 0; thisY < this.weightsDerivative.length; thisY++) {
             for (int prefY = 0; prefY < this.weightsDerivative[thisY].length; prefY++) {
@@ -150,6 +152,7 @@ public class WeightsLayer extends Layer {
         }
         System.out.println();
         if(weightsDerivative == null) {
+            System.out.println("(no weight derivative yet)");
             return;
         }
 

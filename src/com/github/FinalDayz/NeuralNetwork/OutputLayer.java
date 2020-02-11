@@ -18,7 +18,8 @@ public class OutputLayer extends WeightsLayer {
         double[] derivativesError = new double[wantedOutput.length];
 
         for(int index = 0; index < wantedOutput.length; index++) {
-            derivativesError[index] = wantedOutput[index] - outputs[index];
+            double error = wantedOutput[index] - outputs[index];
+            derivativesError[index] = error;
         }
         super.calculateDerivative(derivativesError);
         super.ajustParameters(learningRate);
@@ -27,8 +28,9 @@ public class OutputLayer extends WeightsLayer {
         for(int index = 0; index < wantedOutput.length; index++) {
             double error = wantedOutput[index] - outputs[index];
             MSE += error * error;
+//            MSE += derivativesError[index];
         }
-        MSE /= size;
+       MSE /= size;
 
         return MSE;
     }

@@ -45,10 +45,12 @@ public class NeuralNetworkTrainer {
                     SysUtils.println(output);
                     SysUtils.print("got: ");
                     SysUtils.println(network.lastOutput());
-                    network.printBlackBox();
                 }
 
                 double MSE = network.backporpogate(output);
+                if (SysUtils.DEBUG) {
+                    network.printBlackBox();
+                }
                 averageMSE += MSE;
 
             }

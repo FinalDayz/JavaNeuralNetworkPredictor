@@ -14,14 +14,19 @@ public class NeuralNetwork {
         this.outputLayer = outputLayer;
     }
 
-    public void addLayer(Layer layer) {
-        Layer[] newLayers = new Layer[this.layers.length + 1];
+    public void addLayer(Layer... addedLayers) {
+        Layer[] newLayers = new Layer[this.layers.length + addedLayers.length];
 
         for(int index = 0; index < this.layers.length; index++) {
             newLayers[index] = layers[index];
         }
 
-        newLayers[this.layers.length] = layer;
+        int index = this.layers.length;
+        for(Layer newLayer : addedLayers) {
+            newLayers[index] = newLayer;
+            index++;
+        }
+
         this.layers = newLayers;
     }
 
@@ -87,7 +92,7 @@ public class NeuralNetwork {
         if(wantedOutput.length != this.outputLayer.size) {
             throw new IllegalArgumentException("Wanted output size is not equal to output layer size");
         }
-        return this.outputLayer.beginBackpropogate(wantedOutput, 0.1);
+        return this.outputLayer.beginBackpropogate(wantedOutput, 0.01);
     }
 
     public void printBlackBox() {
@@ -96,5 +101,19 @@ public class NeuralNetwork {
             layer.printBlackBox();
         }
         outputLayer.printBlackBox();
+    }
+
+    public <Type> Type outputToOneHot(Type[] category) {
+        double[] nnOutput = this.lastOutput();
+        int highestIndex = 0;
+        double highestValue = nnOutput[0];
+        for(int i = 0; i < nnOutput.length; i++) {
+            if(nnOutput[i] >= highestValue) {
+                highestValue = nnOutput[i];
+                highestIndex = i;
+            }
+        }
+
+        return category[highestIndex];
     }
 }
